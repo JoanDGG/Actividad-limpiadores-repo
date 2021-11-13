@@ -7,6 +7,7 @@ class LimpiadorAgent(Agent):
     """ An agent that cleans dirty cells."""
     def __init__(self, unique_id, model):
         super().__init__(unique_id, model)
+        self.type = "Limpiador"
 
     def move(self):
         possible_steps = self.model.grid.get_neighborhood(
@@ -18,12 +19,21 @@ class LimpiadorAgent(Agent):
 
     def step(self):
         # Revisar si la celda está sucia o limpia.
+        present_in_cell = self.model.grid.get_cell_list_contents([self.pos])
+        if len(present_in_cell) > 1:
+            other = present_in_cell[0]
+            if(other.type == "Celda"):
+                if(other.is_dirty):
+                    other.is_dirty = False
+                else:
+                    self.move()
         pass
 
 class CeldaAgent(Agent):
     """ An agent with fixed initial wealth."""
     def __init__(self, unique_id, model):
         super().__init__(unique_id, model)
+        self.type = "Celda"
         self.is_dirty = True
 
     def step(self):
@@ -37,7 +47,7 @@ class LimpiadoresModel(Model):
         self.num_celdas = int(width * height * percentage_dirty)
         self.max_steps = max_steps
         self.current_steps = 0
-        self.grid = MultiGrid(width, height, True)
+        self.grid = MultiGrid(width, height, False)
         self.schedule = RandomActivation(self)
         self.running = True
 
