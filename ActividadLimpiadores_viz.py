@@ -32,7 +32,6 @@ def agentPortrayal(agent):
                     "Color": "grey",
                     "r": 0.8}
         if not agent.isDirty:
-            print("celda limpia")
             portrayal["Color"] = "#FFFFFF" # White when its clean
         else:
             portrayal["Color"] = "grey" # Grey when its dirty
@@ -44,11 +43,13 @@ def agentPortrayal(agent):
                     "r": 0.5}
     return portrayal
 
-width = 50
-height = 50
-nAgents = 20
-percentageDirty = 0.8
-steps = 500
+width = int(input("Número de M espacios (ancho): "))
+height = int(input("Número de N espacios (alto): "))
+nAgents = int(input("Número de agentes limpiadores: "))
+percentageDirty = float(input("Porcentaje de celdas inicialmente sucias (como decimal): "))
+steps = int(input("Tiempo máximo de ejecución (en pasos): "))
+
+
 grid = CanvasGrid(agentPortrayal, width, height, 750, 750)
 server = ModularServer(CleaningModel,
                        [grid],

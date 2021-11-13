@@ -38,6 +38,7 @@ class CleaningAgent(Agent):
 
         Returns: None
         """
+        self.model.nMoves += 1
         possibleSteps = self.model.grid.get_neighborhood(
             self.pos,
             moore=True,
@@ -105,12 +106,12 @@ class CleaningModel(Model):
         """
         self.numAgents = nCleaningAgents
         self.numDirtyCells = int(width * height * percentageDirty)
-        print(f"Hay {self.numDirtyCells} celdas sucias")
         self.maxSteps = maxSteps
         self.currentSteps = 0
         self.grid = MultiGrid(width, height, False)
         self.schedule = RandomActivation(self)
         self.running = True
+        self.nMoves = 0
 
         # Create Cell agents
         cellsFilled = 0
@@ -147,3 +148,4 @@ class CleaningModel(Model):
             self.currentSteps += 1
         else:
             print("Ya se llego al numero maximo de pasos")
+            print(self.nMoves)
