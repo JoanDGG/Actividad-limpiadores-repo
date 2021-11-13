@@ -24,6 +24,7 @@ class CeldaAgent(Agent):
     """ An agent with fixed initial wealth."""
     def __init__(self, unique_id, model):
         super().__init__(unique_id, model)
+        self.is_dirty = True
 
     def step(self):
         pass
