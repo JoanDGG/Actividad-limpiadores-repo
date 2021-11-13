@@ -8,6 +8,14 @@ class LimpiadorAgent(Agent):
     def __init__(self, unique_id, model):
         super().__init__(unique_id, model)
 
+    def move(self):
+        possible_steps = self.model.grid.get_neighborhood(
+            self.pos,
+            moore=True,
+            include_center=False)
+        new_position = self.random.choice(possible_steps)
+        self.model.grid.move_agent(self, new_position)
+
     def step(self):
         # Revisar si la celda está sucia o limpia.
         pass
@@ -25,7 +33,7 @@ class LimpiadoresModel(Model):
     """A model with some number of agents."""
     def __init__(self, N_limpiadores, percentage_dirty: float, max_steps, width, height):
         self.num_agents = N_limpiadores
-        self.num_celdas = int(width * heigth * percentage_dirty)
+        self.num_celdas = int(width * height * percentage_dirty)
         self.max_steps = max_steps
         self.current_steps = 0
         self.grid = MultiGrid(width, height, True)
