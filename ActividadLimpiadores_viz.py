@@ -2,41 +2,58 @@ from ActividadLimpiadores import *
 from mesa.visualization.modules import CanvasGrid
 from mesa.visualization.ModularVisualization import ModularServer
 
-def agent_portrayal(agent):
+"""
+Description:
+Program that configure the visualization of the model CleaningModel and shows on the browser
 
-    if(agent.type == "Celda"):
+Autors:
+Daniel Garcia Barajas
+Joan Daniel Guerrero Garcia
+Luis Ignacio Ferro Salinas
+
+Last day of modification:
+November 12th, 2021
+
+"""
+
+
+def agentPortrayal(agent):
+    """
+    Description: Configure visualization of agents
+    Parameters:
+    - agent: the agent that will be configured
+
+    Returns: None
+    """
+    if(agent.type == "Cell"):
         portrayal = {"Shape": "circle",
                     "Filled": "true",
                     "Layer": 0,
                     "Color": "grey",
                     "r": 0.8}
-        if not agent.is_dirty: #Negro cuando están sucios
+        if not agent.isDirty:
             print("celda limpia")
-            portrayal["Color"] = "#FFFFFF" #Blanco al limpiarse
+            portrayal["Color"] = "#FFFFFF" # White when its clean
         else:
-            portrayal["Color"] = "grey" #Blanco al limpiarse
-
+            portrayal["Color"] = "grey" # Grey when its dirty
     else:
         portrayal = {"Shape": "circle",
                     "Filled": "true",
                     "Layer": 1,
                     "Color": "red",
                     "r": 0.5}
-
-
     return portrayal
 
-ancho = 50
-alto = 50
-n_agents = 20
-percentage_dirty = 0.8
+width = 50
+height = 50
+nAgents = 20
+percentageDirty = 0.8
 steps = 500
-
-grid = CanvasGrid(agent_portrayal, ancho, alto, 750, 750)
-server = ModularServer(LimpiadoresModel,
+grid = CanvasGrid(agentPortrayal, width, height, 750, 750)
+server = ModularServer(CleaningModel,
                        [grid],
-                       "Modelo de limpiadore",
-                       {"width":ancho, "height":alto, "N_limpiadores": n_agents, 
-                       "percentage_dirty": percentage_dirty, "max_steps": steps})
+                       "Modelo de limpiadores",
+                       {"width": width, "height": height, "nCleaningAgents": nAgents, 
+                       "percentageDirty": percentageDirty, "maxSteps": steps})
 server.port = 8521 # The default
 server.launch()
