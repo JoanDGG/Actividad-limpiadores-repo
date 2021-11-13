@@ -10,6 +10,11 @@ def agent_portrayal(agent):
                     "Layer": 0,
                     "Color": "grey",
                     "r": 0.8}
+        if not agent.is_dirty: #Negro cuando están sucios
+            print("celda limpia")
+            portrayal["Color"] = "#FFFFFF" #Blanco al limpiarse
+        else:
+            portrayal["Color"] = "grey" #Blanco al limpiarse
 
     else:
         portrayal = {"Shape": "circle",
@@ -18,19 +23,14 @@ def agent_portrayal(agent):
                     "Color": "red",
                     "r": 0.5}
 
-    if(agent.type == "Celda"):
-        if not agent.is_dirty: #Negro cuando están sucios
-            portrayal["Color"] = "#FFFFFF" #Blanco al limpiarse
-        else:
-            portrayal["Color"] = "grey" #Blanco al limpiarse
 
     return portrayal
 
-ancho = 10
-alto = 10
-n_agents = 3
-percentage_dirty = 0.3
-steps = 20
+ancho = 50
+alto = 50
+n_agents = 20
+percentage_dirty = 0.8
+steps = 500
 
 grid = CanvasGrid(agent_portrayal, ancho, alto, 750, 750)
 server = ModularServer(LimpiadoresModel,
