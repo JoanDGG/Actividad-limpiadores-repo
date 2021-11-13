@@ -1,3 +1,4 @@
+from threading import current_thread
 from mesa import Agent, Model
 from mesa.space import MultiGrid
 from mesa.time import RandomActivation
@@ -22,11 +23,14 @@ class LimpiadorAgent(Agent):
         present_in_cell = self.model.grid.get_cell_list_contents([self.pos])
         if len(present_in_cell) > 1:
             other = present_in_cell[0]
+            
             if(other.type == "Celda"):
                 if(other.is_dirty):
                     other.is_dirty = False
                 else:
                     self.move()
+            else:
+                self.move()
         pass
 
 class CeldaAgent(Agent):
@@ -57,6 +61,7 @@ class LimpiadoresModel(Model):
             #self.schedule.add(a) There's no need to activate the 
             x = self.random.randrange(self.grid.width)
             y = self.random.randrange(self.grid.height)
+            print(x, y)
             self.grid.place_agent(a, (x, y))
 
         # Create cleaning agents
@@ -68,5 +73,6 @@ class LimpiadoresModel(Model):
 
     def step(self):
         """ Advance the model by one step"""
-        self.schedule.step()
-        self.current_steps += 1
+        if (self.current_steps < self.max_steps):
+            self.schedule.step()
+            self.current_steps += 1
